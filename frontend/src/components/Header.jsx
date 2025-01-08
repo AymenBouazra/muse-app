@@ -1,22 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, Music } from 'lucide-react';
-import spotifyImg from '/assets/img/spotify.png'
-import apiClient from '../spotify';
+import SearchBar from './SearchBar';
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [avatar, setAvatar] = useState(spotifyImg);
-  const [profile, setProfile] = useState();
-
-
-  useEffect(() => {
-    apiClient.get('me').then(res => {
-      console.log(res);
-      setAvatar(res.data.images[0].url);
-      setProfile(res.data);
-    })
-  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,7 +32,10 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex space-x-8 items-center">
+            <div>
+              <SearchBar />
+            </div>
             {['', 'Music'].map((item) => (
               <Link
                 key={item}
@@ -55,11 +47,6 @@ const Header = () => {
               </Link>
             ))}
           </nav>
-
-          {/* User Actions */}
-          <div className="hidden md:flex items-center space-x-6">
-            <span className="flex gap-2 items-center justify-center text-white bg-slate-800 hover:text-green-400 cursor-pointer transition-colors rounded-md p-1"><img src={avatar} alt='avatar' className='w-8 h-8 rounded-full' /> {profile?.display_name}</span>
-          </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
@@ -81,8 +68,9 @@ const Header = () => {
           className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
             }`}
         >
+          <SearchBar />
           <div className="pt-2 pb-5 ">
-            {['Home', 'Products', 'Services', 'Contact'].map((item) => (
+            {['', 'Music'].map((item) => (
               <Link
                 key={item}
                 to={`/${item.toLowerCase()}`}
