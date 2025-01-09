@@ -7,12 +7,11 @@ const Track = ({ video, onPlay, currentTrack, isPlaying, handlePlayPause, toggle
  const [lyrics, setLyrics] = useState('');
 
  const togglePlay = (id) => {
-  console.log({ id, currentTrack });
   onPlay(id, video.snippet.title, video.snippet.channelTitle);
   handlePlayPause();
  };
 
- const toggleLyrics = async (title, artist) => {
+ const toggleLyrics = async () => {
   const response = await axios.get(`https://api.lyrics.ovh/v1/${'Adele'}/${'Hello'}`);
   const lyrics = response.data.lyrics;
   lyrics ? (

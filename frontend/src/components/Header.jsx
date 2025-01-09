@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Music } from 'lucide-react';
+import { Menu, X, Music, LogIn } from 'lucide-react';
 import SearchBar from './SearchBar';
 
 const Header = () => {
@@ -46,6 +46,14 @@ const Header = () => {
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-pink-400 group-hover:w-full transition-all duration-300 ease-in-out"></span>
               </Link>
             ))}
+            {/* Login/Sign Up Button */}
+            <Link
+              to="/auth"
+              className="flex items-center space-x-2 bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors duration-300"
+            >
+              <LogIn className="w-5 h-5" />
+              <span>Login / Sign Up</span>
+            </Link>
           </nav>
 
           {/* Mobile menu button */}
@@ -80,6 +88,14 @@ const Header = () => {
                 {item}
               </Link>
             ))}
+            {/* Login/Sign Up Button for Mobile */}
+            <Link
+              to="/auth"
+              className="flex items-center space-x-2 px-3 py-2 rounded-md text-white hover:bg-purple-500 transform hover:translate-x-2 transition-all duration-300"
+            >
+              <LogIn className="w-5 h-5" />
+              <span>Login / Sign Up</span>
+            </Link>
           </div>
         </div>
       </div>

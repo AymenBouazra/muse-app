@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import Header from '../components/Header'
 import { useEffect, useState } from 'react';
-import Login from './auth/Login';
+import Login from './auth/Authentication';
 import { setClientToken } from '../spotify';
 
 const Layout = () => {

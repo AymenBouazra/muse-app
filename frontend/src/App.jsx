@@ -3,8 +3,9 @@ import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { PlayerContext } from './utils/context';
 import YouTube from 'react-youtube';
 import axios from 'axios';
+import { ToastBar, Toaster } from 'react-hot-toast';
 
-const Login = React.lazy(() => import('./pages/auth/Login'));
+const Authentication = React.lazy(() => import('./pages/auth/Authentication'));
 const Layout = React.lazy(() => import('./pages/Layout'));
 const ErrorPage = React.lazy(() => import('./pages/errors/Error404'));
 const MusicList = React.lazy(() => import('./pages/MusicList'));
@@ -24,8 +25,8 @@ const router = createBrowserRouter([
         element: <LandingPage />,
       },
       {
-        path: '/login',
-        element: <Login />,
+        path: '/auth',
+        element: <Authentication />,
       },
       {
         path: '/music',
@@ -63,7 +64,6 @@ const App = () => {
     setIsMinimized((prev) => !prev);
   };
 
-  // Fetch videos from the API
   const fetchVideos = async () => {
     const options = {
       method: 'GET',
@@ -72,7 +72,7 @@ const App = () => {
         relatedToVideoId: '7ghhRHRP6t4',
         part: 'id,snippet',
         type: 'video',
-        maxResults: '50',
+        maxResults: 8,
       },
       headers: {
         'x-rapidapi-key': 'e0edd28e50msh9cf119170b61c3ep150d6ajsn4a430688035b',
@@ -233,6 +233,24 @@ const App = () => {
         <RouterProvider router={router} />
         <Player />
       </Suspense>
+      <Toaster
+        position='bottom-center'
+        toastOptions={{
+          duration: 5000,
+        }}
+      >
+        {(t) => (
+          <ToastBar
+            toast={t}
+            style={{
+              ...t.style,
+              animation: t.visible
+                ? 'custom-enter 1s ease'
+                : 'custom-exit 1s ease forwards',
+            }}
+          />
+        )}
+      </Toaster>;
     </PlayerContext.Provider>
   );
 };
