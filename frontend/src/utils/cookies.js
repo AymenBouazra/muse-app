@@ -20,8 +20,5 @@ export const isExpiredToken = (token) => {
 }
 
 export const decodeToken = (token) => {
-    console.log('====================================');
-    console.log(jwtDecode(token));
-    console.log('====================================');
     return token ? jwtDecode(token) : {}
 }

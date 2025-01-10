@@ -10,7 +10,7 @@ User.countDocuments().then(async (usersCount) => {
                 lastname: "Administrator",
                 email: "admin@muse.com",
                 password: "$2a$10$MDIRedaQqMwEzx78OdnOR.8ve5/W42.qDXm/GgQYkTsYfeioKmBkG",
-                photo: 'https://i.imgur.com/lh8Sd5C.png'
+                picture: 'https://i.imgur.com/lh8Sd5C.png'
             },
         ]
         await User.create(usersToInsert);

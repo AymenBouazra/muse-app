@@ -13,7 +13,7 @@ exports.googleAuth = async (req, res) => {
      audience: process.env.GOOGLE_CLIENT_ID,
    });
    const payload = ticket.getPayload();
-   const { sub: googleId, name, email } = payload;
+   const { sub: googleId, name,given_name,family_name, email, picture } = payload;
    let user = await User.findOne({ googleId });
 
    if (!user) {
@@ -27,8 +27,15 @@ exports.googleAuth = async (req, res) => {
      });
      await user.save();
    }
-
-   res.status(200).json({ user, message: 'User connected successfully' });
+   const userData= { 
+    id: user._id,
+    firstname: user.firstname,
+    lastname: user.lastname,
+    email: user.email,
+    picture: user.picture,
+    name: name,
+   }
+   res.status(200).json({ user: userData, token, message: 'User connected successfully' });
  } catch (error) {
    console.error("Error verifying Google token:", error);
    res.status(400).json({ error: "Invalid token" });
@@ -38,7 +45,7 @@ exports.googleAuth = async (req, res) => {
 
 
 exports.register = async (req, res) => {
- const { firstname, lastname, email, password } = req.body;
+ const { firstname, lastname, email, password, name } = req.body;
  try {
   const user = await User.findOne({ email });
   if (user) {
@@ -50,10 +57,20 @@ exports.register = async (req, res) => {
    firstname,
    lastname,
    email,
+   name,
    password: hashedPassword,
   });
-  const token = jwt.sign({ id: newUser._id }, 'secret');
-  return res.status(201).json({ token });
+
+  const userData= { 
+    id: newUser._id,
+    firstname: newUser.firstname,
+    lastname: newUser.lastname,
+    email: newUser.email,
+    picture: newUser.picture,
+    name: name,
+   }
+  const token = jwt.sign(userData, process.env.JWT_SECRET);
+  return res.status(201).json({ token, user: userData});
  } catch (error) {
   return res.status(500).json({ message: 'Internal server error' });
  }
@@ -61,27 +78,64 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
  const { email, password } = req.body;
+ 
  try {
   const user = await User.findOne({ email });
   if (!user) {
    return res.status(400).json({ message: 'User not found' });
   }
+  if (user.googleId) {
+    return res.status(400).json({ message: 'This user is a google account user, try login with your google account' });
+  }
   const isPasswordCorrect = await bcrypt.compare(password, user.password);
   if (!isPasswordCorrect) {
    return res.status(400).json({ message: 'Incorrect password' });
   }
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-  return res.status(200).json({ token });
+  const token = jwt.sign({ id: user._id,
+    firstname: user.firstname,
+    lastname: user.lastname,
+    email: user.email,
+    picture: user.picture,}, process.env.JWT_SECRET);
+  const userData= { 
+    id: user._id,
+    firstname: user.firstname,
+    lastname: user.lastname,
+    email: user.email,
+    picture: user.picture,
+    name: user.name,
+  }
+  return res.status(200).json({ token, user: userData});
  } catch (error) {
+  console.log(error);
+  
   return res.status(500).json({ message: 'Internal server error' });
  }
 };
 
-exports.logout = async (req, res) => {
- try {
-  req.logout();
-  return res.status(200).json({ message: 'Logged out successfully' });
- } catch (error) {
-  return res.status(500).json({ message: 'Internal server error' }); 
- } 
+exports.logout = async (req, res, next) => {
+  try {
+    // If using Passport.js, call req.logout()
+    req.logout((err) => {
+      if (err) {
+        console.error("Error during logout:", err);
+        return res.status(500).json({ message: "Could not log out, please try again." });
+      }
+
+      // Destroy the session
+      if (req.session) {
+        req.session.destroy((err) => {
+          if (err) {
+            console.error("Error destroying session:", err);
+            return res.status(500).json({ message: "Could not log out, please try again." });
+          }
+          return res.status(200).json({ message: "Logged out successfully" });
+        });
+      } else {
+        return res.status(200).json({ message: "Logged out successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error during logout:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 };

@@ -1,15 +1,17 @@
-import http from "../utils/http";
-const googleAuth = async (url, data) => {
-    const response = await http.post(url, data);
-    return response.data;
+import http from "../utils/http.js";
+
+
+const editProfile = async (url, data) => { 
+ const response = await http.put(url, data);
+ return response.data;
 }
 
-const loginForm = async (url,data) => {
-    const response = await http.post(url, data);
-    return response.data;
+const getUser = async (url) => {
+ const response = await http.get(url);
+ return response.data; 
 }
 
 export {
-    googleAuth,
-    loginForm
+    editProfile,
+    getUser
 }

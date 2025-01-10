@@ -5,13 +5,10 @@ const userSchema = new mongoose.Schema(
   firstname: {
    type: String,
   },
-  name: { 
-   type: String,
-  },
-  googleId: {
-   type: String,
-  },
   lastname: {
+   type: String,
+  },
+  name: { 
    type: String,
   },
   email: {
@@ -21,6 +18,10 @@ const userSchema = new mongoose.Schema(
    type: String,
   },
   picture: {
+   type: String,
+   default: 'https://i.imgur.com/lh8Sd5C.png'
+  },
+  googleId: {
    type: String,
   },
   favoritTracks: {type: Array},

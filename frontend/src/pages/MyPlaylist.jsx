@@ -25,8 +25,6 @@ const MyPlaylist = () => {
   };
 
   const toggleExpand = (songId) => {
-    console.log(songId);
-
     setExpandedSong(expandedSong === songId ? null : songId);
   };
   useEffect(() => {

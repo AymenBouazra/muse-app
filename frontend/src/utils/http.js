@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getCookie } from './cookies'
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL
 const axiosApiInstance = axios.create({
@@ -12,8 +11,8 @@ const axiosApiInstance = axios.create({
 // Request interceptor for API calls
 axiosApiInstance.interceptors.request.use(
     async config => {
-        const token = getCookie("token");
-
+        const token = localStorage.getItem("token");
+       
         config.headers = {
             'Authorization': `Bearer ${token}`,
             'Accept': 'application/json'
@@ -21,6 +20,8 @@ axiosApiInstance.interceptors.request.use(
         return config;
     },
     error => {
+        console.log(error);
+        
         Promise.reject(error)
     });
 

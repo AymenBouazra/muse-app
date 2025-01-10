@@ -4,6 +4,7 @@ import { PlayerContext } from './utils/context';
 import YouTube from 'react-youtube';
 import axios from 'axios';
 import { ToastBar, Toaster } from 'react-hot-toast';
+import PrivateRoute from './PrivateRoute/PrivateRoute';
 
 const Authentication = React.lazy(() => import('./pages/auth/Authentication'));
 const Layout = React.lazy(() => import('./pages/Layout'));
@@ -13,32 +14,51 @@ const LandingPage = React.lazy(() => import('./pages/LandingPage'));
 const Playlist = React.lazy(() => import('./pages/MyPlaylist'));
 const Player = React.lazy(() => import('./components/Player'));
 const SearchedList = React.lazy(() => import('./pages/SearchedList'));
+const Profile = React.lazy(() => import('./pages/Profile'));
 
 const router = createBrowserRouter([
   {
+    path: '/auth',
+    element: <Authentication />,
+  },
+  {
     path: '',
     element: <Layout />,
-    errorElement: <ErrorPage />,
     children: [
       {
         path: '/',
         element: <LandingPage />,
       },
       {
-        path: '/auth',
-        element: <Authentication />,
+        path: '/profile',
+        element:
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        ,
       },
       {
         path: '/music',
-        element: <MusicList />,
+        element:
+          <PrivateRoute>
+            <MusicList />
+          </PrivateRoute>
+        ,
       },
       {
         path: '/music/playlist/:id',
-        element: <Playlist />,
+        element:
+          <PrivateRoute>
+            <Playlist />
+          </PrivateRoute>
+        ,
       },
       {
         path: '/music/search',
-        element: <SearchedList />
+        element:
+          <PrivateRoute>
+            <SearchedList />
+          </PrivateRoute>
       },
       {
         path: '*',
@@ -149,11 +169,6 @@ const App = () => {
     }
   };
 
-  const updateProgress = () => {
-    if (playerRef.current && isPlaying) {
-      setCurrentTime(playerRef.current.getCurrentTime());
-    }
-  };
 
   const onPrevious = (trackDetails) => {
     if (playerRef.current) {
@@ -199,6 +214,12 @@ const App = () => {
     },
   };
   useEffect(() => {
+    const updateProgress = () => {
+      if (playerRef.current && isPlaying) {
+        setCurrentTime(playerRef.current.getCurrentTime());
+      }
+    };
+
     const interval = setInterval(updateProgress, 1000);
     return () => clearInterval(interval);
   }, [isPlaying]);
@@ -236,7 +257,11 @@ const App = () => {
       <Toaster
         position='bottom-center'
         toastOptions={{
-          duration: 5000,
+          duration: 3000,
+          style: {
+            background: "#4F46E5", // Purple background
+            color: "#FFFFFF", // White text
+          },
         }}
       >
         {(t) => (
@@ -250,7 +275,7 @@ const App = () => {
             }}
           />
         )}
-      </Toaster>;
+      </Toaster>
     </PlayerContext.Provider>
   );
 };

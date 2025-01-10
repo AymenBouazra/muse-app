@@ -44,7 +44,7 @@ const SearchBar = () => {
     placeholder="Search for music..."
     value={searchQuery}
     onChange={(e) => setSearchQuery(e.target.value)}
-    className="p-2 rounded-lg border border-gray-800 text-gray-400 focus:outline-none focus:border-green-400"
+    className="p-2 rounded-lg border bg-white border-gray-800 text-gray-800 focus:outline-none focus:border-green-400"
    />
    <button
     type="submit"

@@ -30,7 +30,7 @@ const Player = () => {
   };
 
   return (
-    <div className={`fixed bottom-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm p-2 sm:p-4 transition-all duration-300 ${isMinimized ? 'h-16' : 'h-auto'}`}>
+    <div className={`fixed bottom-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm transition-all duration-300 ${isMinimized ? 'h-16' : 'h-auto'}`}>
       {currentTrack && (
         <div className="max-w-4xl mx-auto">
           {/* Minimize/Maximize Button */}
@@ -83,7 +83,7 @@ const Player = () => {
         onStateChange={onPlayerStateChange}
       />
     </div>
-  );
+  )
 };
 
 export default Player;
