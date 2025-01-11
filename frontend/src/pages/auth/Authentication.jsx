@@ -1,17 +1,18 @@
-import { useContext, useState } from "react";
-import { User, Mail, Lock, LogIn, UserPlus } from "lucide-react";
+import { useState } from 'react';
+import { User, Mail, Lock, LogIn, UserPlus } from 'lucide-react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-import { googleAuth, loginForm, registerForm } from "../../API/authApi";
-import { useNavigate } from "react-router-dom";
+import { googleAuth, loginForm, registerForm } from '../../API/authApi';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import PageContainer from "../../components/PageContainer";
+import PageContainer from '../../components/PageContainer';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { UserContext } from "../../utils/context/UserContext";
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../features/userSlice';
 
 const AuthForm = () => {
   const [isSignUp, setIsSignUp] = useState(false);
-  const { updateUserData } = useContext(UserContext);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // Toggle between Sign Up and Sign In
@@ -42,16 +43,14 @@ const AuthForm = () => {
       try {
         if (isSignUp) {
           // Handle Sign Up
-          const response = await registerForm("/auth/register", { ...values, name: `${values.firstname} ${values.lastname}` });
+          const response = await registerForm('/auth/register', { ...values, name: `${values.firstname} ${values.lastname}` });
           toast.promise(
             Promise.resolve(response),
             {
               loading: 'Registering...',
               success: (data) => {
-                localStorage.setItem("token", data.token);
-                localStorage.setItem("user-data", JSON.stringify(data.user));
-                updateUserData(data.user);
-                navigate("/");
+                dispatch(setUser({ user: data.user, token: data.token })); // Update Redux store
+                navigate('/');
                 return data.message || 'Registration successful!';
               },
               error: (err) => err.message || 'Error during registration',
@@ -59,16 +58,14 @@ const AuthForm = () => {
           );
         } else {
           // Handle Sign In
-          const response = await loginForm("/auth/login", values);
+          const response = await loginForm('/auth/login', values);
           toast.promise(
             Promise.resolve(response),
             {
               loading: 'Logging in...',
               success: (data) => {
-                updateUserData(data.user);
-                localStorage.setItem("token", data.token);
-                localStorage.setItem("user-data", JSON.stringify(data.user));
-                navigate("/");
+                dispatch(setUser({ user: data.user, token: data.token })); // Update Redux store
+                navigate('/');
                 return data.message || 'Login successful!';
               },
               error: (err) => {
@@ -79,7 +76,7 @@ const AuthForm = () => {
           );
         }
       } catch (error) {
-        toast.error(error.response.data.message || 'Error during login')
+        toast.error(error.response.data.message || 'Error during login');
       }
     },
   });
@@ -87,16 +84,15 @@ const AuthForm = () => {
   // Google Login Success Handler
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     try {
-      const response = await googleAuth("/auth/google", { token: credentialResponse.credential });
+      const response = await googleAuth('/auth/google', { token: credentialResponse.credential });
 
       toast.promise(
         Promise.resolve(response),
         {
           loading: 'Loading...',
           success: (data) => {
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("user-data", JSON.stringify(data.user));
-            navigate("/");
+            dispatch(setUser({ user: data.user, token: data.token })); // Update Redux store
+            navigate('/');
             return data.message || 'Login successful!';
           },
           error: (err) => err.message || 'Error when fetching',
@@ -110,7 +106,7 @@ const AuthForm = () => {
 
   // Google Login Failure Handler
   const handleGoogleLoginFailure = () => {
-    console.log("Google Login Failed");
+    console.log('Google Login Failed');
   };
 
   return (
@@ -127,7 +123,7 @@ const AuthForm = () => {
             </div>
           </div>
           <h2 className="text-2xl font-bold text-purple-900 mb-6 text-center">
-            {isSignUp ? "Sign Up" : "Sign In"}
+            {isSignUp ? 'Sign Up' : 'Sign In'}
           </h2>
           <form onSubmit={formik.handleSubmit} className="space-y-4">
             {isSignUp && (
@@ -202,7 +198,7 @@ const AuthForm = () => {
               type="submit"
               className="w-full bg-purple-900 text-white py-3 rounded-lg hover:bg-purple-800 transition duration-300"
             >
-              {isSignUp ? "Sign Up" : "Sign In"}
+              {isSignUp ? 'Sign Up' : 'Sign In'}
             </button>
           </form>
           <div className="mt-6 text-center">
@@ -211,7 +207,7 @@ const AuthForm = () => {
               className="text-purple-900 hover:text-purple-700 underline focus:outline-none"
             >
               {isSignUp
-                ? "Already have an account? Sign In"
+                ? 'Already have an account? Sign In'
                 : "Don't have an account? Sign Up"}
             </button>
           </div>

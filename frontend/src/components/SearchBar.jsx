@@ -1,15 +1,17 @@
-import { useState, useContext } from 'react';
-import { PlayerContext } from '../utils/context';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { setSearchResults } from '../features/searchSlice';
 
 const SearchBar = () => {
  const [searchQuery, setSearchQuery] = useState('');
- const { setSearchResults } = useContext(PlayerContext);
+ const dispatch = useDispatch();
  const navigate = useNavigate();
 
- const handleSearch = async (e) => {
-  e.preventDefault();
+ const handleSearch = async () => {
+  console.log(searchQuery);
+
   if (searchQuery.trim()) {
    // Fetch search results from the API
    const options = {
@@ -29,7 +31,9 @@ const SearchBar = () => {
 
    try {
     const response = await axios.request(options);
-    setSearchResults(response.data.items); // Update search results in context
+    console.log(response.data.items);
+
+    dispatch(setSearchResults(response.data.items)); // Update search results in Redux store
     navigate('/music/search?' + searchQuery); // Navigate to the SearchedList page
    } catch (error) {
     console.error(error);
@@ -38,7 +42,7 @@ const SearchBar = () => {
  };
 
  return (
-  <form onSubmit={handleSearch} className="flex items-center">
+  <div className="flex items-center">
    <input
     type="text"
     placeholder="Search for music..."
@@ -47,12 +51,13 @@ const SearchBar = () => {
     className="p-2 rounded-lg border bg-white border-gray-800 text-gray-800 focus:outline-none focus:border-green-400"
    />
    <button
-    type="submit"
+    type="button"
+    onClick={handleSearch}
     className="ml-2 p-2 bg-green-400 text-black rounded-lg hover:bg-green-500"
    >
     Search
    </button>
-  </form>
+  </div>
  );
 };
 

@@ -11,11 +11,11 @@ const Controls = ({
  isMinimized,
 }) => {
  return (
-  <div className="flex items-center justify-center space-x-4 sm:space-x-6">
+  <div className="flex items-center justify-center pb-2 space-x-4 sm:space-x-6">
    {/* Previous Button */}
    <button
     onClick={onPrevious}
-    className={`p-1 sm:p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${isMinimized ? 'p-1 -top-6 relative' : 'p-2 sm:p-2'}`}
+    className={`p-1 sm:p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${isMinimized ? 'p-1 relative' : 'p-2 sm:p-2'}`}
    >
     <SkipBack className={`${isMinimized ? 'w-3 h-3' : 'w-4 h-4 sm:w-5 sm:h-5'} text-gray-700 dark:text-gray-200`} />
    </button>
@@ -23,7 +23,7 @@ const Controls = ({
    {/* Play/Pause Button */}
    <button
     onClick={onPlayPause}
-    className={`p-2 sm:p-3 rounded-full bg-purple-500 hover:bg-purple-600 text-white ${isMinimized ? 'p-1 -top-6 relative' : 'p-2 sm:p-3'}`}
+    className={`p-2 sm:p-3 rounded-full bg-purple-500 hover:bg-purple-600 text-white ${isMinimized ? 'p-1 relative' : 'p-2 sm:p-3'}`}
    >
     {isPlaying ? (
      <Pause className={`${isMinimized ? 'w-4 h-4' : 'w-5 h-5 sm:w-6 sm:h-6'}`} />
@@ -35,7 +35,7 @@ const Controls = ({
    {/* Next Button */}
    <button
     onClick={onNext}
-    className={`p-1 sm:p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${isMinimized ? 'p-1 -top-6 relative' : 'p-2 sm:p-2'}`}
+    className={`p-1 sm:p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${isMinimized ? 'p-1 relative' : 'p-2 sm:p-2'}`}
    >
     <SkipForward className={`${isMinimized ? 'w-3 h-3' : 'w-4 h-4 sm:w-5 sm:h-5'} text-gray-700 dark:text-gray-200`} />
    </button>

@@ -95,7 +95,8 @@ exports.login = async (req, res) => {
     firstname: user.firstname,
     lastname: user.lastname,
     email: user.email,
-    picture: user.picture,}, process.env.JWT_SECRET);
+    picture: user.picture
+  }, process.env.JWT_SECRET);
   const userData= { 
     id: user._id,
     firstname: user.firstname,

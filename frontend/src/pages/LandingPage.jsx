@@ -2,9 +2,7 @@ import { Music, Download, PlayCircle, Heart, Award } from 'lucide-react';
 
 const LandingPage = () => {
  return (
-  <div className="min-h-screen bg-gradient-to-b from-purple-900 via-black to-black text-white">
-
-
+  <div className="min-h-screen bg-gradient-to-b from-[#4A2584] via-black to-black text-white pt-16">
    {/* Hero Section */}
    <section className="pt-32 md:pt-40 px-6">
     <div className="">

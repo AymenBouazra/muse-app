@@ -1,27 +1,27 @@
-import { useContext, useState } from 'react';
-import { PlayerContext } from '../utils/context';
+import { useState } from 'react';
 import ProgressBar from './ProgressBar';
 import Controls from './Controls';
 import '../assets/css/player.css';
 import YouTube from 'react-youtube';
 import { Minimize2, Maximize2 } from 'lucide-react';
+import { useMusicPlayer } from '../hooks/useMusicPlayer';
 
 const Player = () => {
+  // Use the custom hook for music player logic
   const {
     currentTrack,
-    onPlayerReady,
-    onPlayerStateChange,
-    opts,
     isPlaying,
     currentTime,
     duration,
     volume,
     handlePlayPause,
-    onPrevious,
-    onNext,
     onSeek,
     onVolumeChange,
-  } = useContext(PlayerContext);
+    onPlayerReady,
+    onPlayerStateChange,
+    onPrevious,
+    onNext,
+  } = useMusicPlayer();
 
   const [isMinimized, setIsMinimized] = useState(false);
 
@@ -30,7 +30,7 @@ const Player = () => {
   };
 
   return (
-    <div className={`fixed bottom-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm transition-all duration-300 ${isMinimized ? 'h-16' : 'h-auto'}`}>
+    <div className={`fixed bottom-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm transition-all duration-300`}>
       {currentTrack && (
         <div className="max-w-4xl mx-auto">
           {/* Minimize/Maximize Button */}
@@ -78,7 +78,7 @@ const Player = () => {
       {/* Hidden YouTube Player */}
       <YouTube
         videoId={currentTrack?.videoId}
-        opts={opts}
+        opts={{ height: '0', width: '0', playerVars: { autoplay: 1 } }}
         onReady={onPlayerReady}
         onStateChange={onPlayerStateChange}
       />
