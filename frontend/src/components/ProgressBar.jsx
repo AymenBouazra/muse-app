@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-
 const ProgressBar = ({ currentTime, duration, onSeek }) => {
  const formatTime = (seconds) => {
   const mins = Math.floor(seconds / 60);

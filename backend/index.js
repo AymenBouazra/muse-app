@@ -11,7 +11,6 @@ const session = require('express-session');
 const port = process.env.PORT || 4000;
 dotenv.config();
 require('./database/connect');
-require('./commun/initScript')
 require('./middlewares/passport')
 
 
@@ -43,12 +42,12 @@ app.use(passport.session());
 
 //** routes */
 const auth = require('./routes/auth')
-const favoritTracks = require('./routes/favoritTracks')
+const favoritTracks = require('./routes/playlist')
 const user = require('./routes/user')
 //** middlewares */
 app.use('/api/v1/auth', auth)
 app.use('/api/v1/user', user)
-app.use('/api/v1/favorit-tracks', favoritTracks)
+app.use('/api/v1/playlist', favoritTracks)
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

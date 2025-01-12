@@ -1,26 +1,27 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import YouTube from 'react-youtube';
-import axios from 'axios';
 import {
-  setVideos,
   setCurrentTrack,
   setIsPlaying,
   setCurrentTime,
   setDuration,
   setVolume,
+  setVideos,
+  setContext,
 } from '../features/playerSlice';
+import axios from 'axios';
 
 export const useMusicPlayer = () => {
   const dispatch = useDispatch();
   const playerRef = useRef(null);
 
   // Select state from Redux store
-  const { currentTrack, videos, isPlaying, currentTime, duration, volume } = useSelector(
+  const { currentTrack, videos, context, isPlaying, currentTime, duration, volume } = useSelector(
     (state) => state.player
   );
 
-  // Fetch videos from YouTube API
+  // Fetch videos from YouTube API (for MusicList)
   const fetchVideos = async () => {
     const options = {
       method: 'GET',
@@ -44,12 +45,16 @@ export const useMusicPlayer = () => {
       console.error(error);
     }
   };
-
   // Play a track
-  const playTrack = (trackDetails) => {
-    dispatch(setCurrentTrack(trackDetails)); // Set current track in Redux store
+  const playTrack = (trackDetails, videos, context) => {
+    dispatch(setCurrentTrack(trackDetails)); // Set current track
+    dispatch(setVideos(videos)); // Set the list of tracks
+    dispatch(setContext(context)); // Set the context
     dispatch(setIsPlaying(true)); // Set playing state to true
-    playerRef.current.setVolume(volume); // Set volume
+    if (playerRef.current) {
+      playerRef.current.loadVideoById(trackDetails.videoId); // Load the video
+      playerRef.current.setVolume(volume); // Set volume
+    }
   };
 
   // Handle play/pause
@@ -60,8 +65,7 @@ export const useMusicPlayer = () => {
       } else {
         playerRef.current.playVideo();
       }
-      playerRef.current.setVolume(volume);
-      dispatch(setIsPlaying(!isPlaying)); // Toggle playing state in Redux store
+      dispatch(setIsPlaying(!isPlaying)); // Toggle playing state
     }
   };
 
@@ -69,13 +73,13 @@ export const useMusicPlayer = () => {
   const onSeek = (time) => {
     if (playerRef.current) {
       playerRef.current.seekTo(time, true);
-      dispatch(setCurrentTime(time)); // Update current time in Redux store
+      dispatch(setCurrentTime(time)); // Update current time
     }
   };
 
   // Handle volume change
   const onVolumeChange = (newVolume) => {
-    dispatch(setVolume(newVolume)); // Update volume in Redux store
+    dispatch(setVolume(newVolume)); // Update volume
     if (playerRef.current) {
       playerRef.current.setVolume(newVolume);
     }
@@ -84,7 +88,7 @@ export const useMusicPlayer = () => {
   // Handle player ready event
   const onPlayerReady = (event) => {
     playerRef.current = event.target;
-    dispatch(setDuration(playerRef.current.getDuration())); // Set duration in Redux store
+    dispatch(setDuration(playerRef.current.getDuration())); // Set duration
     playerRef.current.setVolume(volume);
   };
 
@@ -99,7 +103,7 @@ export const useMusicPlayer = () => {
 
   // Handle previous track
   const onPrevious = () => {
-    if (playerRef.current) {
+    if (playerRef.current && videos.length > 0) {
       const index = videos.findIndex(
         (video) => playerRef.current.getVideoData().video_id === video.id.videoId
       );
@@ -112,7 +116,7 @@ export const useMusicPlayer = () => {
             artist: previousTrack.snippet.channelTitle,
             videoId: previousTrack.id.videoId,
           })
-        ); // Set previous track in Redux store
+        ); // Set previous track
       }
       playerRef.current.setVolume(volume);
     }
@@ -120,7 +124,7 @@ export const useMusicPlayer = () => {
 
   // Handle next track
   const onNext = () => {
-    if (playerRef.current) {
+    if (playerRef.current && videos.length > 0) {
       const index = videos.findIndex(
         (video) => playerRef.current.getVideoData().video_id === video.id.videoId
       );
@@ -133,7 +137,7 @@ export const useMusicPlayer = () => {
             artist: nextTrack.snippet.channelTitle,
             videoId: nextTrack.id.videoId,
           })
-        ); // Set next track in Redux store
+        ); // Set next track
       }
       playerRef.current.setVolume(volume);
     }
@@ -143,7 +147,7 @@ export const useMusicPlayer = () => {
   useEffect(() => {
     const updateProgress = () => {
       if (playerRef.current && isPlaying) {
-        dispatch(setCurrentTime(playerRef.current.getCurrentTime())); // Update current time in Redux store
+        dispatch(setCurrentTime(playerRef.current.getCurrentTime())); // Update current time
       }
     };
 
@@ -155,12 +159,13 @@ export const useMusicPlayer = () => {
     playerRef,
     currentTrack,
     videos,
+    context,
     isPlaying,
     currentTime,
     duration,
     volume,
-    fetchVideos,
     playTrack,
+    fetchVideos,
     handlePlayPause,
     onSeek,
     onVolumeChange,

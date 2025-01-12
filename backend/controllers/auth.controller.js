@@ -68,6 +68,7 @@ exports.register = async (req, res) => {
     email: newUser.email,
     picture: newUser.picture,
     name: name,
+    playlist: newUser.playlist,
    }
   const token = jwt.sign(userData, process.env.JWT_SECRET);
   return res.status(201).json({ token, user: userData});
@@ -95,7 +96,8 @@ exports.login = async (req, res) => {
     firstname: user.firstname,
     lastname: user.lastname,
     email: user.email,
-    picture: user.picture
+    picture: user.picture,
+    playlist: user.playlist,
   }, process.env.JWT_SECRET);
   const userData= { 
     id: user._id,
@@ -104,6 +106,7 @@ exports.login = async (req, res) => {
     email: user.email,
     picture: user.picture,
     name: user.name,
+    playlist: user.playlist,
   }
   return res.status(200).json({ token, user: userData});
  } catch (error) {

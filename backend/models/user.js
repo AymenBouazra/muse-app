@@ -24,8 +24,7 @@ const userSchema = new mongoose.Schema(
   googleId: {
    type: String,
   },
-  favoritTracks: {type: Array},
-  favoritChannels: {type: Array},
+  playlist: { type: Array },
  },
  {
   timestamps: true, versionKey: false

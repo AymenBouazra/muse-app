@@ -4,10 +4,12 @@ import { setVideos } from '../features/playerSlice';
 import PageContainer from '../components/PageContainer';
 import Tracks from '../components/Tracks';
 import axios from 'axios';
+import { useMusicPlayer } from '../hooks/useMusicPlayer';
 
 const MusicList = () => {
   const dispatch = useDispatch();
   const videos = useSelector((state) => state.player.videos);
+  const { playTrack } = useMusicPlayer();
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -40,7 +42,7 @@ const MusicList = () => {
   return (
     <PageContainer>
       <div className="space-y-2 pb-16">
-        <Tracks videos={videos} />
+        <Tracks videos={videos} playTrack={playTrack} />
       </div>
     </PageContainer>
   );

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import ProgressBar from './ProgressBar';
 import Controls from './Controls';
-import '../assets/css/player.css';
 import YouTube from 'react-youtube';
 import { Minimize2, Maximize2 } from 'lucide-react';
 import { useMusicPlayer } from '../hooks/useMusicPlayer';
@@ -58,12 +57,12 @@ const Player = () => {
           )}
 
           {/* Progress Bar (Hidden when minimized) */}
-          {(
+          {!isMinimized && (
             <ProgressBar currentTime={currentTime} duration={duration} onSeek={onSeek} />
           )}
 
           {/* Controls */}
-          {<Controls
+          <Controls
             isPlaying={isPlaying}
             onPlayPause={handlePlayPause}
             volume={volume}
@@ -71,7 +70,7 @@ const Player = () => {
             onPrevious={onPrevious}
             onNext={onNext}
             isMinimized={isMinimized}
-          />}
+          />
         </div>
       )}
 
@@ -83,7 +82,7 @@ const Player = () => {
         onStateChange={onPlayerStateChange}
       />
     </div>
-  )
+  );
 };
 
 export default Player;

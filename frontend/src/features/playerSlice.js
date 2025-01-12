@@ -1,14 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
+// features/playerSlice.js
 const initialState = {
   currentTrack: null,
-  videos: [],
-  searchResults: [],
+  videos: [], // List of tracks to play
+  context: 'musicList', // Current context (e.g., 'musicList' or 'playlist')
   isPlaying: false,
   currentTime: 0,
   duration: 0,
   volume: 50,
-  favorites: [], // Add favorites state
 };
 
 const playerSlice = createSlice({
@@ -21,8 +21,8 @@ const playerSlice = createSlice({
     setVideos: (state, action) => {
       state.videos = action.payload;
     },
-    setSearchResults: (state, action) => {
-      state.searchResults = action.payload;
+    setContext: (state, action) => {
+      state.context = action.payload;
     },
     setIsPlaying: (state, action) => {
       state.isPlaying = action.payload;
@@ -36,27 +36,17 @@ const playerSlice = createSlice({
     setVolume: (state, action) => {
       state.volume = action.payload;
     },
-    toggleFavorite: (state, action) => {
-      const video = action.payload;
-      const isFavorite = state.favorites.some((fav) => fav.id.videoId === video.id.videoId);
-      if (isFavorite) {
-        state.favorites = state.favorites.filter((fav) => fav.id.videoId !== video.id.videoId);
-      } else {
-        state.favorites.push(video);
-      }
-    },
   },
 });
 
 export const {
   setCurrentTrack,
   setVideos,
-  setSearchResults,
+  setContext,
   setIsPlaying,
   setCurrentTime,
   setDuration,
   setVolume,
-  toggleFavorite,
 } = playerSlice.actions;
 
 export default playerSlice.reducer;

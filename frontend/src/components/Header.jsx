@@ -49,10 +49,10 @@ const Header = () => {
             <div>
               <SearchBar />
             </div>
-            {['', 'Music'].map((item) => (
+            {['', 'Music', 'My Playlist'].map((item) => (
               <Link
                 key={item}
-                to={`/${item.toLowerCase()}`}
+                to={`/${item.toLowerCase().replace(/\s+/g, '-')}`} // Replace spaces with hyphens
                 className="relative text-white group"
               >
                 <span className="relative z-10">{item !== '' ? item : 'Home'}</span>
@@ -130,10 +130,10 @@ const Header = () => {
         >
           <SearchBar />
           <div className="pt-2 pb-5 flex flex-col">
-            {['', 'Music'].map((item) => (
+            {['', 'Music', 'My Playlist'].map((item) => (
               <Link
                 key={item}
-                to={`/${item.toLowerCase()}`}
+                to={`/${item.toLowerCase().replace(/\s+/g, '-')}`} // Replace spaces with hyphens
                 className="block px-3 py-2 rounded-md text-white hover:bg-purple-500 transform hover:translate-x-2 transition-all duration-300"
                 onClick={() => setIsMenuOpen(false)} // Close mobile menu on click
               >

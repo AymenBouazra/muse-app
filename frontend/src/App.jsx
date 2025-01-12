@@ -45,7 +45,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/music/playlist/:id',
+        path: '/my-playlist',
         element: (
           <PrivateRoute>
             <Playlist />

@@ -1,13 +1,15 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
 import { Plus } from "lucide-react"; // Import the Plus icon from Lucide React
 import toast from "react-hot-toast"; // Import React Hot Toast
+import { useDispatch, useSelector } from "react-redux"; // Import Redux hooks
 import PageContainer from "../components/PageContainer";
-import { UserContext } from "../utils/context/UserContext";
 import { editProfile } from "../API/userApi";
+import { setUser } from "../features/userSlice"; // Import the setUser action
 
 const ProfilePage = () => {
-  const { userData, updateUserData } = useContext(UserContext);
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.user.user); // Get user data from Redux store
   const [profilePicture, setProfilePicture] = useState(userData?.picture || null);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -36,9 +38,11 @@ const ProfilePage = () => {
             },
           });
 
-          const { _id, firstname, lastname, email, name, picture, favoritTracks, favoritChannels, googleId } = response;
-          const data = { id: _id, firstname, lastname, email, name, picture, favoritTracks, favoritChannels, googleId }
-          updateUserData(data);
+          const { _id, firstname, lastname, email, name, picture, favoritTracks, favoritChannels, googleId, playlist } = response;
+          const data = { id: _id, firstname, lastname, email, name, picture, favoritTracks, favoritChannels, googleId, playlist };
+
+          // Update user data in Redux store
+          dispatch(setUser(data));
           localStorage.setItem("user-data", JSON.stringify(data));
 
           return response;
@@ -129,19 +133,10 @@ const ProfilePage = () => {
           <h1 className="text-3xl font-bold text-gray-800">
             {userData?.firstname} {userData?.lastname}
           </h1>
-          <p className="text-gray-600 mt-2">Designer</p>
           <div className="flex justify-center space-x-8 mt-4">
             <div className="text-center">
-              <span className="text-gray-800 font-bold text-xl">938</span>
-              <span className="text-gray-600 block text-sm">Posts</span>
-            </div>
-            <div className="text-center">
-              <span className="text-gray-800 font-bold text-xl">3,586</span>
-              <span className="text-gray-600 block text-sm">Followers</span>
-            </div>
-            <div className="text-center">
-              <span className="text-gray-800 font-bold text-xl">2,659</span>
-              <span className="text-gray-600 block text-sm">Following</span>
+              <span className="text-gray-800 font-bold text-xl">{userData?.playlist?.length}</span>
+              <span className="text-gray-600 block text-sm">My playlist</span>
             </div>
           </div>
         </div>
