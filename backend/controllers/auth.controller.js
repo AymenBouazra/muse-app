@@ -73,7 +73,7 @@ exports.register = async (req, res) => {
   const token = jwt.sign(userData, process.env.JWT_SECRET);
   return res.status(201).json({ token, user: userData});
  } catch (error) {
-  return res.status(500).json({ message: 'Internal server error' });
+  return res.status(500).json({ message: 'Internal server error', error });
  }
 };
 
