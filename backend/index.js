@@ -12,18 +12,20 @@ const port = process.env.PORT || 4000;
 dotenv.config();
 require('./database/connect');
 require('./middlewares/passport')
-
+app.use('/', (req,res)=> {
+  res.send('Hello World')
+})
 
 app.use(bodyParser.json());
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.setHeader('Access-Control-Allow-Origin', ['https://muse-app-seven.vercel.app' ,'http://localhost:5173']);
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: ['https://muse-app-seven.vercel.app' ,'http://localhost:5173'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 204,
