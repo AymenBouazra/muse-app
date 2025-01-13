@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import React, { Suspense } from 'react';
 import { ToastBar, Toaster } from 'react-hot-toast';
-import PrivateRoute from './PrivateRoute/PrivateRoute';
+import PrivateRoute from './privateRoute/PrivateRoute';
 import './App.css';
 
 // Lazy-loaded components
