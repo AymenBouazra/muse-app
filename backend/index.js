@@ -13,25 +13,21 @@ dotenv.config();
 require('./database/connect');
 require('./middlewares/passport')
 
+const corsOptions = {
+  origin: 'https://muse-app-seven.vercel.app', // Allow only your frontend URL
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed HTTP methods
+  credentials: true, // Allow cookies and credentials to be sent
+  optionsSuccessStatus: 204, // Respond with 204 No Content for preflight requests
+};
+
+app.use(cors(corsOptions));
+
 app.get('/', (req, res) => {
   res.send('Hello world')
 })
 
 app.use(bodyParser.json());
-// app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', 'https://muse-app-seven.vercel.app');
-//   res.setHeader('Access-Control-Allow-Credentials', 'true');
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-//   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-//   next();
-// });
-const corsOptions = {
-  origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
-app.options('*', cors(corsOptions));
+
 app.use(express.static('public'));
 app.use(morgan('dev'))
 app.use(express.urlencoded({ limit: '100mb', extended: true }))
