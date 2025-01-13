@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 //   next();
 // });
 const corsOptions = {
-  origin: 'https://muse-app-seven.vercel.app',
+  origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 204,
