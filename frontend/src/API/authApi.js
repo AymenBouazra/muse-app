@@ -1,21 +1,21 @@
-import http from "../utils/http";
+import axios from "axios";
 const googleAuth = async (url, data) => {
-    const response = await http.post(url, data);
+    const response = await axios.post(url, data);
     return response.data;
 }
 
 const loginForm = async (url,data) => {
-    const response = await http.post(url, data);
+    const response = await axios.post(url, data);
     return response.data;
 }
 
 const registerForm = async (url,data) => {
-    const response = await http.post(url, data);
+    const response = await axios.post(url, data);
     return response.data;
 }
 
 const logout = async (url) => {
-    await http.post(url);
+    await axios.post(url);
 }
 
 export {
