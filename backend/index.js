@@ -14,18 +14,30 @@ require('./database/connect');
 require('./middlewares/passport')
 
 const corsOptions = {
-  origin: 'https://muse-app-seven.vercel.app', // Allow only your frontend URL
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed HTTP methods
-  credentials: true, // Allow cookies and credentials to be sent
-  optionsSuccessStatus: 204, // Respond with 204 No Content for preflight requests
+  origin: 'https://muse-app-seven.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
-// Set Cross-Origin-Opener-Policy header
+app.options('*', cors(corsOptions)); // Handle preflight requests
+
+// Set headers manually
 app.use((req, res, next) => {
-  res.setHeader('Cross-Origin-Opener-Policy', 'unsafe-none');
+  res.header('Access-Control-Allow-Origin', 'https://muse-app-seven.vercel.app');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });
+
+// Test endpoint
+app.get('/test-cors', (req, res) => {
+  res.json({ message: 'CORS is working!' });
+});
+
 app.get('/', (req, res) => {
   res.send('Hello world')
 })
