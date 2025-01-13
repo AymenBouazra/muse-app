@@ -4,9 +4,8 @@ import Tracks from '../components/Tracks';
 import { useMusicPlayer } from '../hooks/useMusicPlayer';
 
 const SearchedList = () => {
- // Select searchResults from Redux store
  const searchResults = useSelector((state) => state.search.searchResults);
- const { playTrack } = useMusicPlayer(); // Get the playTrack function
+ const { playTrack } = useMusicPlayer();
 
  return (
   <PageContainer>

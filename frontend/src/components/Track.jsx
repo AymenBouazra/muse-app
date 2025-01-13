@@ -22,8 +22,8 @@ const Track = ({
         name: video.snippet.title,
         artist: video.snippet.channelTitle,
       },
-      videos, // Pass the list of tracks
-      'musicList' // Set the context
+      videos,
+      'musicList'
     );
     handlePlayPause();
   };
@@ -38,11 +38,10 @@ const Track = ({
     }
   };
 
-  // Determine if the current track is being played
   const isCurrentTrackPlaying = currentTrack === video.id.videoId && isPlaying;
 
   return (
-    <div className={`flex items-center justify-between p-3 rounded-lg hover:bg-purple-900/20 transition-colors group ${isCurrentTrackPlaying ? 'bg-gray-800' : ''}`}>
+    <div className={`flex items-center justify-between p-3 rounded-lg hover:bg-[#4A2584]/20 transition-colors group ${isCurrentTrackPlaying ? 'bg-gray-800' : ''}`}>
       {/* Thumbnail and Play Button */}
       <div className="relative w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0" onClick={togglePlay}>
         <img

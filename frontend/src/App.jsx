@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import React, { Suspense } from 'react';
 import { ToastBar, Toaster } from 'react-hot-toast';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
+import './App.css';
 
 // Lazy-loaded components
 const Authentication = React.lazy(() => import('./pages/auth/Authentication'));
@@ -81,7 +82,7 @@ const App = () => {
         toastOptions={{
           duration: 3000,
           style: {
-            background: '#4F46E5', // Purple background
+            background: '#4A2584', // Purple background
             color: '#FFFFFF', // White text
           },
         }}

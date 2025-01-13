@@ -3,7 +3,7 @@ const User = require('../models/user');
 exports.editProfile = async (req, res) => {
  try {
   const { firstname, lastname, email } = req.body;
-  const userId = req.params.id; // Assuming you have middleware to extract the user ID from the token
+  const userId = req.params.id; 
   const updateData = {
     firstname,
     lastname,

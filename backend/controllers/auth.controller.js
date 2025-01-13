@@ -118,14 +118,12 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res, next) => {
   try {
-    // If using Passport.js, call req.logout()
     req.logout((err) => {
       if (err) {
         console.error("Error during logout:", err);
         return res.status(500).json({ message: "Could not log out, please try again." });
       }
 
-      // Destroy the session
       if (req.session) {
         req.session.destroy((err) => {
           if (err) {

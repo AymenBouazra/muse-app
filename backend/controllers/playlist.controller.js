@@ -16,17 +16,15 @@ exports.addToPlaylist = async (req, res) => {
 };
 
 exports.removeFromPlaylist = async (req, res) => {
-  const { _id } = req.user; // Get the user ID from the request
-  const { trackId } = req.params; // Get the track ID from the request parameters
+  const { _id } = req.user; 
+  const { trackId } = req.params; 
 
   try {
-    // Find the user by ID
     const user = await User.findById(_id);
     if (!user) {
       return res.status(400).json({ message: 'User not found' });
     }
 
-    // Find the index of the track in the playlist array
     const trackIndex = user.playlist.findIndex(
       (track) => track.id.videoId === trackId
     );

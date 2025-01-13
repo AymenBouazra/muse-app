@@ -30,7 +30,7 @@ const MusicList = () => {
 
       try {
         const response = await axios.request(options);
-        dispatch(setVideos(response.data.items)); // Update videos in Redux store
+        dispatch(setVideos(response.data.items))
       } catch (error) {
         console.error(error);
       }

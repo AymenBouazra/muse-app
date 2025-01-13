@@ -13,13 +13,9 @@ const storage = multer.diskStorage({
 
 
 
-// this code goes inside the object passed to multer()
 function fileFilter(req, file, cb) {
-    // Allowed ext
     const filetypes = /jpg|jpeg|png|gif|webp/;
-    // Check ext
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    // Check mime
     const mimetype = filetypes.test(file.mimetype);
     if (mimetype && extname) {
         return cb(null, true);
@@ -28,7 +24,6 @@ function fileFilter(req, file, cb) {
     }
 }
 
-// inside multer({}), file upto only 1MB can be uploaded
 const upload = multer({
     storage: storage,
     fileFilter: fileFilter,

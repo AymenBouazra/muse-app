@@ -16,12 +16,10 @@ export const useMusicPlayer = () => {
   const dispatch = useDispatch();
   const playerRef = useRef(null);
 
-  // Select state from Redux store
   const { currentTrack, videos, context, isPlaying, currentTime, duration, volume } = useSelector(
     (state) => state.player
   );
 
-  // Fetch videos from YouTube API (for MusicList)
   const fetchVideos = async () => {
     const options = {
       method: 'GET',
@@ -40,24 +38,22 @@ export const useMusicPlayer = () => {
 
     try {
       const response = await axios.request(options);
-      dispatch(setVideos(response.data.items)); // Update videos in Redux store
+      dispatch(setVideos(response.data.items)); 
     } catch (error) {
       console.error(error);
     }
   };
-  // Play a track
   const playTrack = (trackDetails, videos, context) => {
-    dispatch(setCurrentTrack(trackDetails)); // Set current track
-    dispatch(setVideos(videos)); // Set the list of tracks
-    dispatch(setContext(context)); // Set the context
-    dispatch(setIsPlaying(true)); // Set playing state to true
+    dispatch(setCurrentTrack(trackDetails)); 
+    dispatch(setVideos(videos)); 
+    dispatch(setContext(context)); 
+    dispatch(setIsPlaying(true)); 
     if (playerRef.current) {
-      playerRef.current.loadVideoById(trackDetails.videoId); // Load the video
-      playerRef.current.setVolume(volume); // Set volume
+      playerRef.current.loadVideoById(trackDetails.videoId); 
+      playerRef.current.setVolume(volume);
     }
   };
 
-  // Handle play/pause
   const handlePlayPause = () => {
     if (playerRef.current) {
       if (isPlaying) {
@@ -65,43 +61,38 @@ export const useMusicPlayer = () => {
       } else {
         playerRef.current.playVideo();
       }
-      dispatch(setIsPlaying(!isPlaying)); // Toggle playing state
+      dispatch(setIsPlaying(!isPlaying)); 
     }
   };
 
-  // Handle seeking
   const onSeek = (time) => {
     if (playerRef.current) {
       playerRef.current.seekTo(time, true);
-      dispatch(setCurrentTime(time)); // Update current time
+      dispatch(setCurrentTime(time)); 
     }
   };
 
-  // Handle volume change
   const onVolumeChange = (newVolume) => {
-    dispatch(setVolume(newVolume)); // Update volume
+    dispatch(setVolume(newVolume));
     if (playerRef.current) {
       playerRef.current.setVolume(newVolume);
     }
   };
 
-  // Handle player ready event
   const onPlayerReady = (event) => {
     playerRef.current = event.target;
-    dispatch(setDuration(playerRef.current.getDuration())); // Set duration
+    dispatch(setDuration(playerRef.current.getDuration())); 
     playerRef.current.setVolume(volume);
   };
 
-  // Handle player state change
   const onPlayerStateChange = (event) => {
     if (event.data === YouTube.PlayerState.PLAYING) {
-      dispatch(setIsPlaying(true)); // Set playing state to true
+      dispatch(setIsPlaying(true)); 
     } else if (event.data === YouTube.PlayerState.PAUSED) {
-      dispatch(setIsPlaying(false)); // Set playing state to false
+      dispatch(setIsPlaying(false)); 
     }
   };
 
-  // Handle previous track
   const onPrevious = () => {
     if (playerRef.current && videos.length > 0) {
       const index = videos.findIndex(
@@ -116,13 +107,12 @@ export const useMusicPlayer = () => {
             artist: previousTrack.snippet.channelTitle,
             videoId: previousTrack.id.videoId,
           })
-        ); // Set previous track
+        ); 
       }
       playerRef.current.setVolume(volume);
     }
   };
 
-  // Handle next track
   const onNext = () => {
     if (playerRef.current && videos.length > 0) {
       const index = videos.findIndex(
@@ -137,17 +127,16 @@ export const useMusicPlayer = () => {
             artist: nextTrack.snippet.channelTitle,
             videoId: nextTrack.id.videoId,
           })
-        ); // Set next track
+        );
       }
       playerRef.current.setVolume(volume);
     }
   };
 
-  // Update progress every second
   useEffect(() => {
     const updateProgress = () => {
       if (playerRef.current && isPlaying) {
-        dispatch(setCurrentTime(playerRef.current.getCurrentTime())); // Update current time
+        dispatch(setCurrentTime(playerRef.current.getCurrentTime())); 
       }
     };
 

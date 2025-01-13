@@ -2,21 +2,19 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchplaylist, removeFromPlaylist } from '../features/playlistSlice';
 import { useMusicPlayer } from '../hooks/useMusicPlayer';
-import { MinusSquare } from 'lucide-react'; // Import the trash icon
+import { MinusSquare } from 'lucide-react';
 import toast from 'react-hot-toast';
 import PageContainer from '../components/PageContainer';
 
 const MyPlaylist = () => {
   const dispatch = useDispatch();
   const { tracks } = useSelector((state) => state.playlist);
-  const { playTrack, currentTrack, isPlaying } = useMusicPlayer(); // Get currentTrack and isPlaying
+  const { playTrack, currentTrack, isPlaying } = useMusicPlayer();
 
-  // Fetch the playlist when the component mounts
   useEffect(() => {
     dispatch(fetchplaylist());
   }, [dispatch]);
 
-  // Handle playing a track
   const handlePlayTrack = (video) => {
     playTrack(
       {
@@ -24,12 +22,11 @@ const MyPlaylist = () => {
         name: video.snippet.title,
         artist: video.snippet.channelTitle,
       },
-      tracks, // Pass the user's playlist
-      'playlist' // Set the context
+      tracks,
+      'playlist'
     );
   };
 
-  // Handle removing a track from the playlist
   const handleRemoveTrack = (trackId) => {
     dispatch(removeFromPlaylist(trackId))
       .unwrap()
@@ -56,14 +53,14 @@ const MyPlaylist = () => {
                   onClick={() => handlePlayTrack(video)}
                   key={video.id.videoId}
                   className={`relative group rounded-lg p-4 transition-all duration-300 cursor-pointer ${isCurrentTrack
-                    ? 'bg-gradient-to-br from-purple-900/50 to-pink-900/50' // Gradient for playing track
-                    : 'bg-gradient-to-br from-black/20 to-gray-900/20 hover:from-black/30 hover:to-gray-900/30' // Gradient for default and hover
+                    ? 'bg-gradient-to-br from-purple-900/50 to-pink-900/50'
+                    : 'bg-gradient-to-br from-black/20 to-gray-900/20 hover:from-black/30 hover:to-gray-900/30'
                     } shadow-lg hover:shadow-xl transform hover:scale-105`}
                 >
                   {/* Remove Button */}
                   <button
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevent the card's onClick from firing
+                      e.stopPropagation();
                       handleRemoveTrack(video.id.videoId);
                     }}
                     className="absolute top-2 right-2 p-2 bg-black/50 rounded-full hover:bg-black/70 transition-colors"

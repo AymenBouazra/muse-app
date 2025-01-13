@@ -1,4 +1,3 @@
-// store.js
 import { configureStore } from '@reduxjs/toolkit';
 import playerReducer from './features/playerSlice';
 import userReducer from './features/userSlice';

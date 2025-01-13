@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// features/playerSlice.js
 const initialState = {
   currentTrack: null,
-  videos: [], // List of tracks to play
-  context: 'musicList', // Current context (e.g., 'musicList' or 'playlist')
+  videos: [], 
+  context: 'musicList', 
   isPlaying: false,
   currentTime: 0,
   duration: 0,

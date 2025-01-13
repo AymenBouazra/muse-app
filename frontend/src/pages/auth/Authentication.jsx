@@ -15,13 +15,11 @@ const AuthForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Toggle between Sign Up and Sign In
   const toggleAuthMode = () => {
     setIsSignUp(!isSignUp);
-    formik.resetForm(); // Reset form when toggling
+    formik.resetForm();
   };
 
-  // Formik setup
   const formik = useFormik({
     initialValues: {
       firstname: '',
@@ -42,14 +40,13 @@ const AuthForm = () => {
     onSubmit: async (values) => {
       try {
         if (isSignUp) {
-          // Handle Sign Up
           const response = await registerForm('/auth/register', { ...values, name: `${values.firstname} ${values.lastname}` });
           toast.promise(
             Promise.resolve(response),
             {
               loading: 'Registering...',
               success: (data) => {
-                dispatch(setUser({ user: data.user, token: data.token })); // Update Redux store
+                dispatch(setUser({ user: data.user, token: data.token }));
                 navigate('/');
                 return data.message || 'Registration successful!';
               },
@@ -57,14 +54,13 @@ const AuthForm = () => {
             }
           );
         } else {
-          // Handle Sign In
           const response = await loginForm('/auth/login', values);
           toast.promise(
             Promise.resolve(response),
             {
               loading: 'Logging in...',
               success: (data) => {
-                dispatch(setUser({ user: data.user, token: data.token })); // Update Redux store
+                dispatch(setUser({ user: data.user, token: data.token }));
                 navigate('/');
                 return data.message || 'Login successful!';
               },
@@ -81,7 +77,6 @@ const AuthForm = () => {
     },
   });
 
-  // Google Login Success Handler
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     try {
       const response = await googleAuth('/auth/google', { token: credentialResponse.credential });
@@ -91,7 +86,7 @@ const AuthForm = () => {
         {
           loading: 'Loading...',
           success: (data) => {
-            dispatch(setUser({ user: data.user, token: data.token })); // Update Redux store
+            dispatch(setUser({ user: data.user, token: data.token }));
             navigate('/');
             return data.message || 'Login successful!';
           },
@@ -104,7 +99,6 @@ const AuthForm = () => {
     }
   };
 
-  // Google Login Failure Handler
   const handleGoogleLoginFailure = () => {
     console.log('Google Login Failed');
   };
@@ -196,7 +190,7 @@ const AuthForm = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-purple-900 text-white py-3 rounded-lg hover:bg-purple-800 transition duration-300"
+              className="w-full bg-[#4A2584] text-white py-3 rounded-lg hover:bg-purple-800 transition duration-300"
             >
               {isSignUp ? 'Sign Up' : 'Sign In'}
             </button>

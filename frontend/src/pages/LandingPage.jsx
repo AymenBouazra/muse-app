@@ -1,4 +1,5 @@
-import { Music, Download, PlayCircle, Heart, Award } from 'lucide-react';
+import { Download, PlayCircle, Heart, Award, Link } from 'lucide-react';
+import museLogo from '/assets/img/logo/muse-brand.svg';
 
 const LandingPage = () => {
  return (
@@ -16,7 +17,7 @@ const LandingPage = () => {
         Premium sound quality with zero ads.
        </p>
        <div className="flex space-x-4">
-        <button className="bg-green-400 hover:bg-green-500 text-black px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105">
+        <button className="bg-[#0DB78E] hover:bg-green-500 text-black px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105">
          Get Started
         </button>
         <button className="border border-white hover:border-green-400 px-8 py-3 rounded-full transition-all duration-300 hover:text-green-400">
@@ -60,7 +61,7 @@ const LandingPage = () => {
         description: "AI-powered recommendations based on your listening habits."
        }
       ].map((feature, index) => (
-       <div key={index} className="bg-purple-900/20 p-8 rounded-2xl hover:bg-purple-900/30 transition-all duration-300 transform hover:-translate-y-2">
+       <div key={index} className="bg-[#4A2584]/20 p-8 rounded-2xl hover:bg-[#4A2584]/30 transition-all duration-300 transform hover:-translate-y-2">
         <div className="mb-6">{feature.icon}</div>
         <h3 className="text-2xl font-semibold mb-4">{feature.title}</h3>
         <p className="text-gray-300">{feature.description}</p>
@@ -92,7 +93,7 @@ const LandingPage = () => {
         features: ["Up to 6 accounts", "Parental controls", "All Premium features", "Family mix"]
        }
       ].map((plan, index) => (
-       <div key={index} className="bg-purple-900/20 p-8 rounded-2xl hover:bg-purple-900/30 transition-all duration-300">
+       <div key={index} className="bg-[#4A2584]/20 p-8 rounded-2xl hover:bg-[#4A2584]/30 transition-all duration-300">
         <h3 className="text-2xl font-semibold mb-4">{plan.title}</h3>
         <p className="text-4xl font-bold mb-6">${plan.price}<span className="text-lg font-normal">/month</span></p>
         <ul className="space-y-4 mb-8">
@@ -103,7 +104,7 @@ const LandingPage = () => {
           </li>
          ))}
         </ul>
-        <button className="w-full bg-green-400 hover:bg-green-500 text-black py-3 rounded-full transition-all duration-300">
+        <button className="w-full bg-[#0DB78E] hover:bg-green-500 text-black py-3 rounded-full transition-all duration-300">
          Get Started
         </button>
        </div>
@@ -116,8 +117,11 @@ const LandingPage = () => {
    <footer className="py-12 px-6 bg-black/80">
     <div className="max-w-7xl mx-auto text-center">
      <div className="flex items-center justify-center space-x-2 mb-8">
-      <Music className="w-8 h-8 text-green-400" />
-      <span className="text-2xl font-bold">Muse</span>
+      <div className="flex-shrink-0">
+       <Link to="/">
+        <img src={museLogo} alt="muse-brand" className="w-[120px]" />
+       </Link>
+      </div>
      </div>
      <p className="text-gray-400">© 2025 Muse. All rights reserved.</p>
     </div>

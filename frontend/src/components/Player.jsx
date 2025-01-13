@@ -6,7 +6,6 @@ import { Minimize2, Maximize2 } from 'lucide-react';
 import { useMusicPlayer } from '../hooks/useMusicPlayer';
 
 const Player = () => {
-  // Use the custom hook for music player logic
   const {
     currentTrack,
     isPlaying,

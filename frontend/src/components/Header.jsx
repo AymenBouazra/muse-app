@@ -26,7 +26,7 @@ const Header = () => {
 
   const handleLogout = async () => {
     await logout('/auth/logout');
-    dispatch(clearUser()); // Clear user from Redux store
+    dispatch(clearUser());
     navigate('/auth');
   };
 
@@ -52,7 +52,7 @@ const Header = () => {
             {['', 'Music', 'My Playlist'].map((item) => (
               <Link
                 key={item}
-                to={`/${item.toLowerCase().replace(/\s+/g, '-')}`} // Replace spaces with hyphens
+                to={`/${item.toLowerCase().replace(/\s+/g, '-')}`}
                 className="relative text-white group"
               >
                 <span className="relative z-10">{item !== '' ? item : 'Home'}</span>
@@ -69,7 +69,7 @@ const Header = () => {
 
                 {/* Dropdown Content */}
                 {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg">
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
                     {/* User Name Section */}
                     <div className="px-4 py-2 border-b">
                       <div className="flex items-center space-x-2">
@@ -84,7 +84,7 @@ const Header = () => {
                         <Link
                           to="/profile"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                          onClick={() => setIsDropdownOpen(false)} // Close dropdown on click
+                          onClick={() => setIsDropdownOpen(false)}
                         >
                           Profile
                         </Link>
@@ -104,7 +104,7 @@ const Header = () => {
             ) : (
               <Link
                 to="/auth"
-                className="flex items-center space-x-2 bg-green-400 text-black px-4 py-2 rounded-lg hover:bg-green-500 transition-colors duration-300"
+                className="flex items-center space-x-2 bg-[#0DB78E] text-black px-4 py-2 rounded-lg hover:bg-green-500 transition-colors duration-300"
               >
                 <LogIn className="w-5 h-5" />
                 <span>Login / Sign Up</span>
@@ -125,7 +125,7 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
+          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
             }`}
         >
           <SearchBar />
@@ -133,9 +133,9 @@ const Header = () => {
             {['', 'Music', 'My Playlist'].map((item) => (
               <Link
                 key={item}
-                to={`/${item.toLowerCase().replace(/\s+/g, '-')}`} // Replace spaces with hyphens
+                to={`/${item.toLowerCase().replace(/\s+/g, '-')}`}
                 className="block px-3 py-2 rounded-md text-white hover:bg-purple-500 transform hover:translate-x-2 transition-all duration-300"
-                onClick={() => setIsMenuOpen(false)} // Close mobile menu on click
+                onClick={() => setIsMenuOpen(false)}
               >
                 {item !== '' ? item : 'Home'}
               </Link>
@@ -143,7 +143,7 @@ const Header = () => {
 
             {/* Mobile Dropdown for Logged-In Users */}
             {user ? (
-              <div className="px-3 py-2">
+              <div className="px-3 py-2 relative">
                 <button
                   className="w-full flex items-center space-x-2"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -154,15 +154,15 @@ const Header = () => {
 
                 {/* Mobile Dropdown Content */}
                 {isDropdownOpen && (
-                  <div className="mt-2 bg-white rounded-md shadow-lg">
+                  <div className="mt-2 bg-white rounded-md shadow-lg z-50">
                     <ul>
                       <li>
                         <Link
                           to="/profile"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                           onClick={() => {
-                            setIsDropdownOpen(false); // Close dropdown on click
-                            setIsMenuOpen(false); // Close mobile menu on click
+                            setIsDropdownOpen(false);
+                            setIsMenuOpen(false);
                           }}
                         >
                           Profile
@@ -183,8 +183,8 @@ const Header = () => {
             ) : (
               <Link
                 to="/auth"
-                className="flex justify-center items-center space-x-2 bg-green-400 text-black px-4 py-2 rounded-lg hover:bg-green-500 transition-colors duration-300"
-                onClick={() => setIsMenuOpen(false)} // Close mobile menu on click
+                className="flex justify-center items-center space-x-2 bg-[#0DB78E] text-black px-4 py-2 rounded-lg hover:bg-green-500 transition-colors duration-300"
+                onClick={() => setIsMenuOpen(false)}
               >
                 <div className="flex justify-center items-center gap-3">
                   <LogIn className="w-5 h-5" />

@@ -1,19 +1,18 @@
 import { useState } from "react";
 import { useFormik } from "formik";
-import { Plus } from "lucide-react"; // Import the Plus icon from Lucide React
-import toast from "react-hot-toast"; // Import React Hot Toast
-import { useDispatch, useSelector } from "react-redux"; // Import Redux hooks
+import { Plus } from "lucide-react";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 import PageContainer from "../components/PageContainer";
 import { editProfile } from "../API/userApi";
-import { setUser } from "../features/userSlice"; // Import the setUser action
+import { setUser } from "../features/userSlice";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
-  const userData = useSelector((state) => state.user.user); // Get user data from Redux store
+  const userData = useSelector((state) => state.user.user);
   const [profilePicture, setProfilePicture] = useState(userData?.picture || null);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Formik setup
   const formik = useFormik({
     initialValues: {
       firstname: userData?.firstname || "",
@@ -21,7 +20,6 @@ const ProfilePage = () => {
       email: userData?.email || "",
     },
     onSubmit: async (values) => {
-      // Wrap the API call in toast.promise
       toast.promise(
         (async () => {
           const formData = new FormData();
@@ -41,7 +39,6 @@ const ProfilePage = () => {
           const { _id, firstname, lastname, email, name, picture, favoritTracks, favoritChannels, googleId, playlist } = response;
           const data = { id: _id, firstname, lastname, email, name, picture, favoritTracks, favoritChannels, googleId, playlist };
 
-          // Update user data in Redux store
           dispatch(setUser(data));
           localStorage.setItem("user-data", JSON.stringify(data));
 
@@ -58,7 +55,6 @@ const ProfilePage = () => {
     },
   });
 
-  // Handle file drop
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
@@ -68,7 +64,6 @@ const ProfilePage = () => {
     }
   };
 
-  // Handle file input change
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith("image/")) {

@@ -10,10 +10,7 @@ const SearchBar = () => {
  const navigate = useNavigate();
 
  const handleSearch = async () => {
-  console.log(searchQuery);
-
   if (searchQuery.trim()) {
-   // Fetch search results from the API
    const options = {
     method: 'GET',
     url: 'https://youtube-v31.p.rapidapi.com/search',
@@ -33,8 +30,8 @@ const SearchBar = () => {
     const response = await axios.request(options);
     console.log(response.data.items);
 
-    dispatch(setSearchResults(response.data.items)); // Update search results in Redux store
-    navigate('/music/search?' + searchQuery); // Navigate to the SearchedList page
+    dispatch(setSearchResults(response.data.items));
+    navigate('/music/search?' + searchQuery);
    } catch (error) {
     console.error(error);
    }
@@ -53,7 +50,7 @@ const SearchBar = () => {
    <button
     type="button"
     onClick={handleSearch}
-    className="ml-2 p-2 bg-green-400 text-black rounded-lg hover:bg-green-500"
+    className="ml-2 p-2 bg-[#0DB78E] text-black rounded-lg hover:bg-green-500"
    >
     Search
    </button>
